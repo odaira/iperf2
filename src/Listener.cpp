@@ -345,6 +345,13 @@ sInterupted == SIGALRM
 	    }
             Mutex_Unlock( &clients_mutex );
 
+	    // create a new socket for the Listener thread now that server thread
+	    // is handling the current one
+            if ( UDP ) {
+                ListenSocket = -1;
+                Listen( );
+            }
+
             //
 	    // Everything is now ready to start the server
 	    //
@@ -368,13 +375,6 @@ sInterupted == SIGALRM
 			thread_start(tempSettings);
 		    }
 		}
-
-	    // create a new socket for the Listener thread now that server thread
-	    // is handling the current one
-            if ( UDP ) {
-                ListenSocket = -1;
-                Listen( );
-            }
 
             // Prep for next connection
             if ( !isSingleClient( mSettings ) ) {
