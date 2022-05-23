@@ -1408,7 +1408,8 @@ void Settings_ModalOptions (struct thread_Settings *mExtSettings) {
 	    time_t nowsecs = now.getSecs();
 	    // fill out the formats in the event they are needed per an time error
 	    char start_timebuf[80];
-	    struct tm ts = *localtime(&mExtSettings->txstart_epoch.tv_sec);
+	    time_t tempt = mExtSettings->txstart_epoch.tv_sec;
+	    struct tm ts = *localtime(&tempt);
 	    strftime(start_timebuf, sizeof(start_timebuf), "(%Y-%m-%d %H:%M:%S %Z)", &ts);
 	    char now_timebuf[80];
 	    ts = *localtime(&nowsecs);

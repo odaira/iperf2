@@ -169,7 +169,7 @@ typedef bool _Bool;
 #ifdef _WIN32_WINNT
 #undef _WIN32_WINNT
 #endif
-    #define _WIN32_WINNT 0x0501 /* use (at least) WinXP API */
+    #define _WIN32_WINNT 0x0A00 /* use (at least) WinXP API */
     #define WIN32_LEAN_AND_MEAN /* exclude unnecesary headers */
     #include <windows.h>
     #include <winsock2.h>

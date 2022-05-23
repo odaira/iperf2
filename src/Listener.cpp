@@ -538,7 +538,7 @@ void Listener::my_multicast_join () {
 	    WARN_errno(rc == SOCKET_ERROR, "multicast join");
 #if HAVE_DECL_IP_MULTICAST_ALL
 	    int mc_all = 0;
-	    rc = setsockopt(ListenSocket, IPPROTO_IP, IP_MULTICAST_ALL, (void*) &mc_all, sizeof(mc_all));
+	    rc = setsockopt(ListenSocket, IPPROTO_IP, IP_MULTICAST_ALL, reinterpret_cast<char*>(&mc_all), sizeof(mc_all));
 	    WARN_errno(rc == SOCKET_ERROR, "ip_multicast_all");
 #endif
 	} else {
@@ -603,7 +603,7 @@ void Listener::my_multicast_join () {
 #endif
 		rc = -1;
 #if HAVE_DECL_MCAST_JOIN_SOURCE_GROUP
-		rc = setsockopt(ListenSocket,IPPROTO_IPV6,MCAST_JOIN_SOURCE_GROUP, &group_source_req,
+		rc = setsockopt(ListenSocket,IPPROTO_IPV6,MCAST_JOIN_SOURCE_GROUP, reinterpret_cast<char*>(&group_source_req),
 				sizeof(group_source_req));
 #endif
 		FAIL_errno(rc == SOCKET_ERROR, "mcast v6 join source group",mSettings);
@@ -622,7 +622,7 @@ void Listener::my_multicast_join () {
 		group->sin6_port = 0;    /* Ignored */
 		rc = -1;
 #if HAVE_DECL_MCAST_JOIN_GROUP
-		rc = setsockopt(ListenSocket,IPPROTO_IPV6,MCAST_JOIN_GROUP, &group_req,
+		rc = setsockopt(ListenSocket,IPPROTO_IPV6,MCAST_JOIN_GROUP, reinterpret_cast<char*>(&group_req),
 				sizeof(group_source_req));
 #endif
 		FAIL_errno(rc == SOCKET_ERROR, "mcast v6 join group",mSettings);
@@ -670,7 +670,7 @@ void Listener::my_multicast_join () {
 		rc = -1;
 
 #if HAVE_DECL_MCAST_JOIN_SOURCE_GROUP
-		rc = setsockopt(ListenSocket,IPPROTO_IP,MCAST_JOIN_SOURCE_GROUP, &group_source_req,
+		rc = setsockopt(ListenSocket,IPPROTO_IP,MCAST_JOIN_SOURCE_GROUP, reinterpret_cast<char*>(&group_source_req),
 				sizeof(group_source_req));
 #endif
 
@@ -707,7 +707,7 @@ void Listener::my_multicast_join () {
 		group->sin_port = 0;    /* Ignored */
 		rc = -1;
 #if HAVE_DECL_MCAST_JOIN_GROUP
-		rc = setsockopt(ListenSocket,IPPROTO_IP,MCAST_JOIN_GROUP, &group_req,
+		rc = setsockopt(ListenSocket,IPPROTO_IP,MCAST_JOIN_GROUP, reinterpret_cast<char*>(&group_req),
 				sizeof(group_source_req));
 #endif
 		FAIL_errno(rc == SOCKET_ERROR, "mcast join group",mSettings);

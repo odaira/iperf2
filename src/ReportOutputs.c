@@ -1062,9 +1062,11 @@ void tcp_output_sumcnt_write_enhanced (struct TransferInfo *stats) {
 static char __timestring[200];
 static void format_timestamp (struct timeval *timestamp, int enhanced) {
     if (!enhanced) {
-	strftime(__timestring, 80, "%Y%m%d%H%M%S", localtime(&timestamp->tv_sec));
+        time_t tempt = timestamp->tv_sec;
+	strftime(__timestring, 80, "%Y%m%d%H%M%S", localtime(&tempt));
     } else {
-	strftime(__timestring, 80, "%Y%m%d%H%M%S", localtime(&timestamp->tv_sec));
+        time_t tempt = timestamp->tv_sec;
+	strftime(__timestring, 80, "%Y%m%d%H%M%S", localtime(&tempt));
 	snprintf((__timestring + strlen(__timestring)), 160, ".%.3d", (int) (timestamp->tv_usec/1000));
     }
 }
@@ -1519,7 +1521,8 @@ void reporter_print_connection_report (struct ConnectionInfo *report) {
     if (!isServerReverse(report->common) && (isEnhanced(report->common) || isConnectOnly(report->common))) {
 	if (report->connect_timestamp.tv_sec > 0) {
 	    struct tm ts;
-	    ts = *localtime(&report->connect_timestamp.tv_sec);
+	    time_t tempt = report->connect_timestamp.tv_sec;
+	    ts = *localtime(&tempt);
 	    char now_timebuf[80];
 	    strftime(now_timebuf, sizeof(now_timebuf), "%Y-%m-%d %H:%M:%S (%Z)", &ts);
 	    if (!isUDP(report->common) && (report->common->ThreadMode == kMode_Client) && (report->tcpinitstats.connecttime > 0)) {
@@ -1610,7 +1613,8 @@ void reporter_print_connection_report (struct ConnectionInfo *report) {
 #else
 	    gettimeofday(&now, NULL);
 #endif
-	    ts = *localtime(&now.tv_sec);
+	    time_t tempt = now.tv_sec;
+	    ts = *localtime(&tempt);
 	    char now_timebuf[80];
 	    strftime(now_timebuf, sizeof(now_timebuf), "%Y-%m-%d %H:%M:%S (%Z)", &ts);
 	    // Format time, "ddd yyyy-mm-dd hh:mm:ss zzz"
@@ -1620,9 +1624,11 @@ void reporter_print_connection_report (struct ConnectionInfo *report) {
 		if (report->txholdbacktime.tv_usec > 0)
 		    seconds_from_now++;
 		start.tv_sec = now.tv_sec + seconds_from_now;
-		ts = *localtime(&start.tv_sec);
+		time_t tempt = start.tv_sec;
+		ts = *localtime(&tempt);
 	    } else {
-		ts = *localtime(&report->epochStartTime.tv_sec);
+	        time_t tempt = report->epochStartTime.tv_sec;
+		ts = *localtime(&tempt);
 		seconds_from_now = ceil(TimeDifference(report->epochStartTime, now));
 	    }
 	    strftime(start_timebuf, sizeof(start_timebuf), "%Y-%m-%d %H:%M:%S", &ts);
